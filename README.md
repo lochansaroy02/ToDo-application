@@ -1,7 +1,5 @@
-# To do application
+# TODO Application
 
-this project is containes simple TODO application 
-it has the following features 
-- Anycan create todo 
-- Anyone can see thier existing  todo
--Anyone can mark their todo as done  
+### About the application
+- this application is todo app
+- in this user can create tasks and mark them to as done
