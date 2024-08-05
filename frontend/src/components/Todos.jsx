@@ -21,32 +21,32 @@ const Todos = () => {
 
   }, []);
 
-  
+
   const handleCompleted = async (id) => {
+    console.log('Updating todo with id:', id); // Log the id to ensure it's correct
+
     try {
-      const response = await fetch('http://localhost:3000/completed', {
+      const response = await fetch('http://localhost:3000/todo', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id })
       });
-  
+
       if (!response.ok) {
-        // Handle response errors
-        console.error('Failed to update');
+        console.error('Failed to update'); // Log the failure reason
+        alert("Update failed");
       } else {
-        // Optional: Handle successful response
-        console.log('Update successful');
+        console.log('Update successful'); // Log the success
+        alert("Update successful");
       }
     } catch (error) {
-      // Handle network or other errors
-      console.error('Error:', error);
+      console.error('Error:', error); // Log the error
     }
   }
-  
-  
-  
+
+
 
 
 
@@ -65,7 +65,15 @@ const Todos = () => {
             <h3 className="text-base">{item.description}</h3>
             <h4>{item.completed}</h4>
           </div>
-          <button onClick={() => handleCompleted(item._id)}>{item.completed ? 'done': "do"} </button>
+          <div  className='gap-5  flex items-center'>
+            <button onClick={() => handleCompleted(item._id)}>
+              {!item.completed ? '⭕' : '✅'}
+            </button >
+            <button onClick={() => handleCompleted(item._id)}>
+              ❌
+            </button>
+          </div>
+
 
         </div>
       ))}

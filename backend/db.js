@@ -1,9 +1,12 @@
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 
 
 
-mongoose.connect("mongodb+srv://chatgptapi13:Ma7rBJF07WCi6Xb5@cluster0.47ftwse.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/todo");
+mongoose.connect(process.env.URI);
 
 const todoSchema = mongoose.Schema({
     title: String,

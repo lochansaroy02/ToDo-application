@@ -8,9 +8,8 @@ app.use(cors())
 app.use(express.json())
 
 app.post('/todo', async (req, res) => {
-
     const createPayload = req.body;
-    const parsePayload = createToDo.safeParse(createPayload)
+    const parsePayload = createToDo.safeParse(createPayload)  //zod validation
     if (!parsePayload.success) {
         res.status(411).json({
             messege: 'you passed wrong data '
@@ -44,66 +43,26 @@ app.get('/todo', async (req, res) => {
 
 
 
-app.put('/completed', async (req, res) => {
-    const updatePayload = req.body;
-    const parsePayload = updateToDo.safeParse(updatePayload)
-    if (!parsePayload.success) {
+app.put('/todo', async (req, res) => {
+    console.log('Received update request:', req.body); // Log the request body
+
+    try {
+        const todos = await todo.updateOne(
+            { _id: req.body.id },
+            { $set: { completed: true } }
+        );
+
+        console.log('Update result:', todos); // Log the update result
+
         res.json({
-            messege: "you have updated wrong information"
-        })
-        return
+            message: 'Todo updated',
+            data: todos
+        });
+    } catch (error) {
+        console.error('Update error:', error); // Log the error
+        res.status(500).json({ message: 'Update failed', error });
     }
-
-
-    const todos = await todo.update(
-        {
-            _id: req.body.id
-        },
-        {
-            completed: true
-        }
-    )
-})
-
-
-
-// app.put('/completed', async (req, res) => {
-//     const updatePayload = req.body;
-
-
-//     const parsePayload = updateToDo.safeParse(updatePayload);
-//     console.log(parsePayload)
-//     if (!parsePayload.success) {
-//         res.status(400).json({
-//             message: "Invalid data provided"
-//         });
-//         return;
-//     }
-
-//     try {
-//         const todos = await todo.updateOne(
-//             { _id: req.body.id },
-//             { $set: { completed: true } }
-//         );
-
-//         if (todos.nModified === 0) {
-//             // Handle case where no document was updated
-//             res.status(404).json({
-//                 message: "Todo not found or already updated"
-//             });
-//         } else {
-//             // Successfully updated
-//             res.status(200).json({
-//                 message: "Todo updated successfully"
-//             });
-//         }
-//     } catch (error) {
-//         // Handle potential errors
-//         res.status(500).json({
-//             message: "An error occurred while updating"
-//         });
-//     }
-// });
+});
 
 
 

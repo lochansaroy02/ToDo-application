@@ -10,9 +10,11 @@ const CreateTodo = () => {
 
 
   const addTodo = async () => {
+    
     const response = await fetch('http://localhost:3000/todo', {
       method: "POST",
       body: JSON.stringify({
+        //body can be modified
         title: title,
         description: description
       }),
