@@ -25,7 +25,12 @@ app.post('/todo', async (req, res) => {
     })
 
     res.json({
-        messege: "todo created"
+        messege: "todo created",
+        data: {
+            title: createPayload.title,
+            description: createPayload.description
+        }
+
     })
 })
 
@@ -44,22 +49,18 @@ app.get('/todo', async (req, res) => {
 
 
 app.put('/todo', async (req, res) => {
-    console.log('Received update request:', req.body); // Log the request body
-
     try {
         const todos = await todo.updateOne(
             { _id: req.body.id },
             { $set: { completed: true } }
         );
 
-        console.log('Update result:', todos); // Log the update result
 
         res.json({
             message: 'Todo updated',
-            data: todos
+            id: req.body.id
         });
     } catch (error) {
-        console.error('Update error:', error); // Log the error
         res.status(500).json({ message: 'Update failed', error });
     }
 });

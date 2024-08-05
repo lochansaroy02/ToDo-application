@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
-const CreateTodo = () => {
+const CreateTodo = ({setTodoList}) => {
 
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("")
-
-
-
 
   const addTodo = async () => {
     
@@ -21,9 +18,13 @@ const CreateTodo = () => {
       headers: {
         "Content-Type": "application/json"
       }
+      
     });
 
-    alert('data added')
+    // alert('data added')
+    const data = await response.json()
+    setTodoList((prev) => [data.data,...prev ])
+
   }
 
 
