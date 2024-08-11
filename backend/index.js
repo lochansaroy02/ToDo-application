@@ -7,6 +7,13 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 
+
+
+app.get('/', (req, res) => {
+    res.json({
+        message: "server is running"
+    })
+})
 app.post('/todo', async (req, res) => {
     const createPayload = req.body;
     const parsePayload = createToDo.safeParse(createPayload)  //zod validation
