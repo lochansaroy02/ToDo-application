@@ -3,7 +3,7 @@ const { createToDo, updateToDo } = require('./types');
 const { todo } = require('./db');
 const app = express()
 const cors = require('cors')
-
+const PORT = 3000
 app.use(cors())
 app.use(express.json())
 
@@ -14,6 +14,8 @@ app.get('/', (req, res) => {
         message: "server is running"
     })
 })
+
+
 app.post('/todo', async (req, res) => {
     const createPayload = req.body;
     const parsePayload = createToDo.safeParse(createPayload)  //zod validation
@@ -65,7 +67,8 @@ app.put('/todo', async (req, res) => {
 
         res.json({
             message: 'Todo updated',
-            id: req.body.id
+            id: req.body.id,
+            data: todos
         });
     } catch (error) {
         res.status(500).json({ message: 'Update failed', error });
@@ -73,10 +76,25 @@ app.put('/todo', async (req, res) => {
 });
 
 
+app.delete('/todo', async (req, res) => {
+    const id = req.body.id;
+    try {
+        await todo.deleteOne({ _id: id });
 
-app.delete('/delete', (req, res) => {
+        const updatedTodo = await todo.find();
 
+        res.json({
+            message: 'Todo deleted successfully',
+            id: id,
+            data: updatedTodo
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Failed to delete todo', error });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`)
 })
-
-app.listen(3000)
 
